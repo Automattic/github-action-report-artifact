@@ -1,0 +1,28 @@
+name: 'Report artifact'
+description: 'Process and return artifact ID and URL in the output, with an additional report step to publish a comment or comment_status'
+inputs:
+  github-token:
+    description: 'GitHub token to use to make requests to Github API'
+    required: true
+  artifact-name:
+    description: "Name of the artifact to search for. If it's not found on the artifact list, the action will emit an error."
+    required: true
+  report-on:
+      description: 'Where to report to. Can be none, pull_request or commit_status'
+      required: false
+      default: none
+  context:
+      description: 'If reportOn is commit_status, sets the value of the context that the commit_status refers to. The default value is ARTIFACT_NAME if not defined.'
+      required: false
+      default: "{name} Download"
+  message:
+      description: "Message to put in the description or in the text of the issue. Any occurences of {url} will be replaced by the URL to download the artifact, and {name} will be replaced by the name of the artifact"
+      required: true
+outputs:
+  artifact_id:
+    description: 'ID of the referred artifact'
+  artifact_url:
+    description: 'URL to download the referred artifact'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
