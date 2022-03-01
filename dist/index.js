@@ -8451,7 +8451,7 @@ async function run() {
 		const artifactName = core.getInput('artifact-name');
 		const reportOn = core.getInput('report-on');
 		const commitStatusContext = core.getInput('context');
-		const message = core.getMultilineInput('message');
+		const message = core.getInput('message');
 		const octokit = github.getOctokit( githubToken );
 
 		const { context } = github;
