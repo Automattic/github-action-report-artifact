@@ -66,12 +66,13 @@ async function run() {
 	core.setOutput('artifact_list', data.list)
 }
 
-function formatArtifacts(response, context, artifactName) {
+function formatArtifacts(response, context, queriedArtifactName) {
 	const list = response.data.artifacts.map(formatArtifact, context);
-	const artifact = findArtifact(list, artifactName);
+	const artifact = findArtifact(list, queriedArtifactName);
 	return {
 		artifact,
-		queriedArtifactName: artifactName,
+		context,
+		queriedArtifactName,
 		list
 	}
 }
