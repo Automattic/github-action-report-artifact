@@ -58,6 +58,8 @@ async function run() {
 			break;
 		case "none":
 			break;
+		default:
+			throw new Error(`Option "report-on" has an invalid value: "${reportOn}"`)
 	}
 	core.setOutput( 'artifact_id', data.artifact ? data.artifact.id : "" );
 	core.setOutput( 'artifact_url', data.artifact ? data.artifact.url : "" );
