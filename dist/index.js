@@ -16839,7 +16839,7 @@ async function run() {
 
 	const {id: run_id, check_suite_id, head_sha: sha, pull_requests} = context.payload.workflow_run;
 
-	const artifactsResponse = await octokit.rest.actions.listWorkflowRunArtifacts(
+	const response = await octokit.rest.actions.listWorkflowRunArtifacts(
 		{
 			owner,
 			repo,
@@ -16847,7 +16847,7 @@ async function run() {
 		}
 	);
 
-	const data = formatArtifacts({owner, repo, check_suite_id, sha}, artifactsResponse, artifactName);
+	const data = formatArtifacts(response, {owner, repo, check_suite_id, sha}, artifactName);
 
 	switch (reportOn) {
 		case "commit_status":
