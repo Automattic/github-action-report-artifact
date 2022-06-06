@@ -9,7 +9,8 @@ async function run() {
 	const reportOn = core.getInput('report-on');
 	const commitStatusContext = core.getInput('context');
 	const message = core.getInput('message');
-	const commitStatusText = core.getInput('commit_status_state');
+	const commitStatusText = core.getInput('state');
+	const commitStatusTargetUrl = core.getInput('target_url');
 	const octokit = github.getOctokit(githubToken);
 
 	const {context} = github;
@@ -39,7 +40,7 @@ async function run() {
 				repo,
 				sha,
 				state: formatMessage(commitStatusText, data),
-				target_url: data.url,
+				target_url: formatMessage(commitStatusTargetUrl, data),
 				description: formatMessage(message, data),
 				context: formatMessage(commitStatusContext, data),
 			});
