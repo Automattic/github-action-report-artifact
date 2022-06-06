@@ -6,7 +6,7 @@ inputs:
     required: true
   artifact-name:
     description: "Name of the artifact to search for. If it's not found on the artifact list, the action will emit an error."
-    required: true
+    required: false
   report-on:
       description: 'Where to report to. Can be none, pull_request or commit_status'
       required: false
@@ -14,15 +14,22 @@ inputs:
   context:
       description: 'If reportOn is commit_status, sets the value of the context that the commit_status refers to. The default value is ARTIFACT_NAME if not defined.'
       required: false
-      default: "{name} Download"
+      default: "{{queriedArtifactName}} Download"
   message:
-      description: "Message to put in the description or in the text of the issue. Any occurences of {url} will be replaced by the URL to download the artifact, and {name} will be replaced by the name of the artifact"
-      required: true
+      description: "Message to put in the description or in the text of the issue. Any occurences of {{artifact.url}} will be replaced by the URL to download the artifact, and {{artifact.name}} will be replaced by the name of the artifact"
+      required: false
+      default: "{{#if artifact}}Click Details to download the artifact '{{ artifact.name }}'{{ else }}Artifact '{{ queriedArtifactName }}' not found{{/if}}"
+  state:
+      description: 'If reportOn is commit_status, sets the value of the status of the commit_status, which should be success or failure'
+      required: false
+      default: '{{#if artifact}}success{{ else }}failure{{/if}}'
 outputs:
   artifact_id:
-    description: 'ID of the referred artifact'
+    description: 'ID of the artifact referred by artifact-name'
   artifact_url:
-    description: 'URL to download the referred artifact'
+    description: 'URL to download the artifact referred by artifact-name'
+  artifact_list:
+    description: 'JSON containing list of artifacts detected'
 runs:
   using: 'node16'
   main: 'dist/index.js'
