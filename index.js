@@ -90,7 +90,7 @@ function formatArtifact(artifactResult) {
 
 function formatMessage(message, obj) {
 	const template = handlebars.compile(message, {strict: true});
-	return template(obj);
+	return template(obj).trim();
 }
 
 function reportErrors(error) {
