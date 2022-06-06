@@ -69,11 +69,13 @@ async function run() {
 function formatArtifacts(response, context, queriedArtifactName) {
 	const list = response.data.artifacts.map(formatArtifact, context);
 	const artifact = findArtifact(list, queriedArtifactName);
+	const byName = list.reduce((obj, artifact) => obj[artifact.name] = artifact, {});
 	return {
 		artifact,
 		context,
 		queriedArtifactName,
-		list
+		list,
+		byName
 	}
 }
 
