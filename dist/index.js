@@ -16826,7 +16826,8 @@ async function run() {
 	const reportOn = core.getInput('report-on');
 	const commitStatusContext = core.getInput('context');
 	const message = core.getInput('message');
-	const commitStatusText = core.getInput('commit_status_state');
+	const commitStatusText = core.getInput('state');
+	const commitStatusTargetUrl = core.getInput('target_url');
 	const octokit = github.getOctokit(githubToken);
 
 	const {context} = github;
@@ -16855,10 +16856,10 @@ async function run() {
 				owner,
 				repo,
 				sha,
-				state: formatMessage(commitStatusText, data),
-				target_url: data.url,
-				description: formatMessage(message, data),
-				context: formatMessage(commitStatusContext, data),
+				state: processTemplate(commitStatusText, data),
+				target_url: processTemplate(commitStatusTargetUrl, data),
+				description: processTemplate(message, data),
+				context: processTemplate(commitStatusContext, data),
 			});
 			break;
 		case "pull_request":
@@ -16869,7 +16870,7 @@ async function run() {
 				owner,
 				repo,
 				issue_number: pull_requests[0].number,
-				body: formatMessage(message, data),
+				body: processTemplate(message, data),
 			});
 			break;
 		case "none":
@@ -16904,9 +16905,9 @@ function formatArtifact(artifactResult) {
 	}
 }
 
-function formatMessage(message, obj) {
-	const template = handlebars.compile(message, {strict: true});
-	return template(obj);
+function processTemplate(template, values) {
+	const fn = handlebars.compile(template, {strict: true});
+	return fn(values).trim();
 }
 
 function reportErrors(error) {
