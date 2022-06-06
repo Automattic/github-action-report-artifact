@@ -39,10 +39,10 @@ async function run() {
 				owner,
 				repo,
 				sha,
-				state: formatMessage(commitStatusText, data),
-				target_url: formatMessage(commitStatusTargetUrl, data),
-				description: formatMessage(message, data),
-				context: formatMessage(commitStatusContext, data),
+				state: processTemplate(commitStatusText, data),
+				target_url: processTemplate(commitStatusTargetUrl, data),
+				description: processTemplate(message, data),
+				context: processTemplate(commitStatusContext, data),
 			});
 			break;
 		case "pull_request":
@@ -53,7 +53,7 @@ async function run() {
 				owner,
 				repo,
 				issue_number: pull_requests[0].number,
-				body: formatMessage(message, data),
+				body: processTemplate(message, data),
 			});
 			break;
 		case "none":
@@ -88,9 +88,9 @@ function formatArtifact(artifactResult) {
 	}
 }
 
-function formatMessage(message, obj) {
-	const template = handlebars.compile(message, {strict: true});
-	return template(obj).trim();
+function processTemplate(template, values) {
+	const fn = handlebars.compile(template, {strict: true});
+	return fn(values).trim();
 }
 
 function reportErrors(error) {
