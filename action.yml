@@ -31,6 +31,9 @@ inputs:
     description: Deprecated parameter. Use target-url instead.
     deprecationMessage: Use target-url instead
     required: false
+  ignore-empty:
+    description: 'If true, will not publish anything if the artifact list is empty'
+    required: false
 outputs:
   artifact_id:
     description: 'ID of the artifact referred by artifact-name'
