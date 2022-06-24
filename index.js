@@ -10,7 +10,7 @@ async function run() {
 	const commitStatusContext = core.getInput('context');
 	const message = core.getInput('message');
 	const commitStatusText = core.getInput('state');
-	const commitStatusTargetUrl = core.getInput('target_url');
+	const commitStatusTargetUrl = core.getInput('target-url');
 	const octokit = github.getOctokit(githubToken);
 
 	const {context} = github;

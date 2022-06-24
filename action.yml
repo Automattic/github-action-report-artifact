@@ -23,10 +23,14 @@ inputs:
       description: 'If reportOn is commit_status, sets the value of the status of the commit_status, which should be success or failure'
       required: false
       default: '{{#if artifact}}success{{ else }}failure{{/if}}'
-  target_url:
+  target-url:
     description: 'If reportOn is commit_status, sets the value of the URL of the commit_status details link'
     required: false
     default: '{{#if artifact}}{{ artifact.url }}{{/if}}'
+  target_url:
+    description: Deprecated parameter. Use target-url instead.
+    deprecationMessage: Use target-url instead
+    required: false
 outputs:
   artifact_id:
     description: 'ID of the artifact referred by artifact-name'
