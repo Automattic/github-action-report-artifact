@@ -16827,8 +16827,9 @@ async function run() {
 	const commitStatusContext = core.getInput('context');
 	const message = core.getInput('message');
 	const commitStatusText = core.getInput('state');
-	const commitStatusTargetUrl = core.getInput('target_url');
+	const commitStatusTargetUrl = core.getInput('target-url');
 	const octokit = github.getOctokit(githubToken);
+	const ignoreEmpty = core.getInput("ignore-empty") === 'true';
 
 	const {context} = github;
 
@@ -16849,6 +16850,11 @@ async function run() {
 	);
 
 	const data = formatArtifacts(response, {owner, repo, check_suite_id, sha}, artifactName);
+
+	if (ignoreEmpty && !data.list.length) {
+		console.log("Ignoring run because list of artifacts is empty and ignore-empty is 'true'");
+		return;
+	}
 
 	switch (reportOn) {
 		case "commit_status":
